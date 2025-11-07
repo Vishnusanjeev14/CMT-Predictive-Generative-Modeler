@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMT Predictive & Generative Modeler</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #4a90e2;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #4a90e2;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #fafafa;
+            font-weight: 500;
+            border-bottom: 1px solid #555;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1000px;
+            gap: 20px;
+        }
+        .panel {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            flex: 1;
+            min-width: 350px;
+        }
+        .module { margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        .form-row { display: flex; gap: 15px; }
+        .form-row .form-group { flex: 1; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #bbb;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #e0e0e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4a90e2;
+            color: #ffffff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            width: 100%;
+        }
+        button:hover { background-color: #5aa1f2; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+        
+        .prediction-result {
+            background-color: #2a2a2a;
+            border: 1px dashed #4a90e2;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: left; /* Changed for charts */
+        }
+        .prediction-result h3 {
+            margin-top: 0;
+            color: #5aa1f2;
+            font-size: 1.5em;
+            text-align: center; /* Center the title */
+        }
+        .prediction-result p { font-size: 1.2em; color: #fff; margin: 10px 0; text-align: center; }
+        
+        /* --- NEW: Chart Bar Styles --- */
+        .chart-label {
+            text-align: left;
+            font-size: 0.9em;
+            color: #bbb;
+            margin-top: 10px;
+        }
+        .chart-bar-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .chart-bar {
+            background-color: #4a90e2;
+            height: 20px;
+            border-radius: 0 4px 4px 0;
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 10px #4a90e233;
+        }
+        
+        .loader {
+            display: none;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        .error-message { color: #ff6b6b; font-weight: bold; display: none; margin-top: 10px; }
+        
+        /* --- NEW: Generation Output Style --- */
+        #generation-output {
+            margin-top: 20px;
+            font-family: "Courier New", Courier, monospace;
+            background-color: #2a2a2a;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+            color: #00ff00; /* Green terminal text */
+            border: 1px solid #444;
+        }
+        #generation-output strong {
+            color: #fff;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <h1>🧬 CMT Predictive & Generative Modeler</h1>
+
+    <div class="container">
+        
+        <div class="panel">
+            <div class="module">
+                <h2>1. Predictive Model</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age_of_onset">Age of Onset</label>
+                        <input type="number" id="age_of_onset" value="35">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="motor_score">Motor Score</label>
+                        <input type="number" id="motor_score" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="sensory_score">Sensory Score</label>
+                        <input type="number" id="sensory_score" value="50">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gene_variant_id">Gene Variant ID</label>
+                    <select id="gene_variant_id">
+                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="mutation_type">Mutation Type</label>
+                    <select id="mutation_type">
+                        <option value="missense">missense</option>
+                        <option value="nonsense">nonsense</option>
+                        <option value="frameshift">frameshift</option>
+                        <option value="duplication">duplication</option>
+                        <option value="deletion">deletion</option>
+                    </select>
+                </div>
+                
+                <button id="predict-button" onclick="runPrediction()">Predict Severity</button>
+            </div>
+            
+            <div class="module">
+                <h2>Prediction Result</h2>
+                <div id="loader-pred" class="loader"></div>
+                <div id="prediction-output" class="prediction-result">
+                    <p>// Awaiting prediction input...</p>
+                </div>
+                <p id="error-box-pred" class="error-message"></p>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="module">
+                <h2>2. Synthetic Patient Generation</h2>
+                
+                <div class="form-group">
+                    <label for="gen_severity">Generate a patient with this severity:</label>
+                    <select id="gen_severity">
+                        <option value="mild">Mild</option>
+                        <option value="moderate" selected>Moderate</option>
+                        <option value="severe">Severe</option>
+                    </select>
+                </div>
+                
+                <button id="generate-button" onclick="runGeneration()">Generate New Patient</button>
+                
+                <div id="loader-gen" class="loader"></div>
+                
+                <div id="generation-output">
+                    </div>
+                <p id="error-box-gen" class="error-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Populate Gene Variant Dropdown ---
+        const geneSelect = document.getElementById('gene_variant_id');
+        const geneVariants = [
+            'GENE001', 'GENE002', 'GENE003', 'GENE004', 'GENE005', 'GENE006', 'GENE007', 'GENE008', 
+            'GENE009', 'GENE010', 'GENE011', 'GENE012', 'GENE013', 'GENE014', 'GENE015', 'GENE016', 
+            'GENE017', 'GENE018', 'GENE019', 'GENE020'
+        ];
+        geneVariants.forEach(gene => {
+            const option = document.createElement('option');
+            option.value = gene;
+            option.textContent = gene;
+            geneSelect.appendChild(option);
+        });
+
+        // --- Prediction Function (with charts) ---
+        async function runPrediction() {
+            const predictionArea = document.getElementById('prediction-output');
+            const loader = document.getElementById('loader-pred');
+            const button = document.getElementById('predict-button');
+            const errorBox = document.getElementById('error-box-pred');
+
+            const inputData = {
+                'age_of_onset': parseFloat(document.getElementById('age_of_onset').value),
+                'motor_score': parseFloat(document.getElementById('motor_score').value),
+                'sensory_score': parseFloat(document.getElementById('sensory_score').value),
+                'gene_variant_id': document.getElementById('gene_variant_id').value,
+                'mutation_type': document.getElementById('mutation_type').value
+            };
+            
+            loader.style.display = 'block';
+            button.disabled = true;
+            errorBox.style.display = 'none';
+            predictionArea.innerHTML = `<p>Processing inputs...</p>`;
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(inputData)
+                });
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error || `Server error: ${response.status}`);
+                }
+                const result = await response.json();
+
+                // --- NEW: Display with bar charts ---
+                predictionArea.innerHTML = `
+                    <h3>Prediction: ${result.prediction_text}</h3>
+                    
+                    <div class="chart-label">Mild: (${(result.confidence_scores.mild * 100).toFixed(1)}%)</div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar" style="width: ${result.confidence_scores.mild * 100}%;"></div>
+                    </div>
+                    
+                    <div class="chart-label">Moderate: (${(result.confidence_scores.moderate * 100).toFixed(1)}%)</div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar" style="width: ${result.confidence_scores.moderate * 100}%;"></div>
+                    </div>
+                    
+                    <div class="chart-label">Severe: (${(result.confidence_scores.severe * 100).toFixed(1)}%)</div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar" style="width: ${result.confidence_scores.severe * 100}%;"></div>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Prediction failed:', error);
+                errorBox.innerText = `Error: ${error.message}`;
+                errorBox.style.display = 'block';
+                predictionArea.innerHTML = `<p>// Prediction failed.</p>`;
+            } finally {
+                loader.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+
+        // --- NEW: Generation Function ---
+        async function runGeneration() {
+            const outputArea = document.getElementById('generation-output');
+            const loader = document.getElementById('loader-gen');
+            const button = document.getElementById('generate-button');
+            const errorBox = document.getElementById('error-box-gen');
+            
+            const severity = document.getElementById('gen_severity').value;
+            
+            loader.style.display = 'block';
+            button.disabled = true;
+            outputArea.style.display = 'none';
+            errorBox.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 'severity': severity })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error || `Server error: ${response.status}`);
+                }
+
+                const patient = await response.json();
+                
+                // Format the output as text
+                outputArea.innerHTML = `
+                    <strong>Generated Profile (Target: ${patient.disease_severity})</strong><br>
+                    -------------------------------------<br>
+                    Gene Variant : ${patient.gene_variant_id}<br>
+                    Mutation Type: ${patient.mutation_type}<br>
+                    Age of Onset : ${patient.age_of_onset}<br>
+                    Motor Score  : ${patient.motor_score}<br>
+                    Sensory Score: ${patient.sensory_score}
+                `;
+                outputArea.style.display = 'block';
+
+            } catch (error) {
+                console.error('Generation failed:', error);
+                errorBox.innerText = `Error: ${error.message}`;
+                errorBox.style.display = 'block';
+                outputArea.innerHTML = ``;
+            } finally {
+                loader.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

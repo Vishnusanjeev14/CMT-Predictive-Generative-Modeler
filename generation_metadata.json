@@ -1,0 +1,8 @@
+{
+  "source_dataset": "cmt_synthetic_dataset.csv",
+  "generated_dataset": "generated_data.csv",
+  "n_generated": 1998,
+  "checkpoint_dir": "checkpoints",
+  "latent_dim": 64,
+  "epochs": 400
+}
