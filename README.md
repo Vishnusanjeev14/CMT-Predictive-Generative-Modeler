@@ -1,4 +1,4 @@
-# CMT-Predictive-Generative-Modeler
+# CMT Generative & Predictive Modeler
 
 This project is an end-to-end web application for modeling Charcot-Marie-Tooth (CMT) disease. It uses a deep learning model (CGAN) to generate high-fidelity synthetic patient data and a machine learning model (RandomForest) to predict disease severity based on genotype-phenotype data.
 
@@ -21,22 +21,36 @@ This application features a live web dashboard with two primary functions:
 
 ---
 
-## Project Structure
+## Project Structure (Corrected)
 
-/CMT_Project/ ├── app.py # Flask web server (powers the app) ├── create_models.py # Trains the RandomForest model ├── tabular_cgan.py # Trains the CGAN model ├── cmt_synthetic_dataset.csv # The "real" seed dataset ├── requirements.txt # All Python dependencies | ├── rf_model.pkl # (Generated) The predictive model ├── encoder.pkl # (Generated) Data processor ├── scaler.pkl # (Generated) Data processor | ├── /checkpoints/ │ └── cgan_checkpoint_epoch400.pt # (Generated) The generative model | └── /templates/ └── index.html # The frontend web page
+```text
+/CMT_Project/
+├── app.py                     # Flask web server (main application logic)
+├── create_models.py           # Script to train the RandomForest predictor
+├── tabular_cgan.py            # Script for the CGAN deep learning model
+├── cmt_synthetic_dataset.csv  # The base/seed synthetic dataset
+├── requirements.txt           # All Python dependencies
+|
+├── rf_model.pkl               # (Generated) The trained RandomForest model
+├── encoder.pkl                # (Generated) Data processor (OneHotEncoder)
+├── scaler.pkl                 # (Generated) Data processor (StandardScaler)
+|
+├── /checkpoints/
+│   └── cgan_checkpoint_epoch400.pt # (Generated) The trained CGAN generator
+|
+└── /templates/
+    └── index.html             # The frontend user interface
 
 
----
 
-## How to Run
-
+How to Run
 This project requires two training steps before the web application can be run.
 
-### Step 1: Install Dependencies
+Step 1: Install Dependencies
+Install all the required Python libraries from the requirements.txt file.
 
-Install all the required Python libraries from the `requirements.txt` file.
+Bash
 
-```bash
 pip install -r requirements.txt
 Step 2: Train the AI Models
 You must run both training scripts to generate the models that the app.py server needs.
