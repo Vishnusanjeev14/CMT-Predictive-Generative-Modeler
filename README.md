@@ -32,6 +32,7 @@ pip install -r requirements.txt
 ```
 
 Step 2: Train the AI Models You must run both training scripts to generate the models that the app.py server needs.
+
 A. Train the Predictive Model: This script reads cmt_synthetic_dataset.csv and creates rf_model.pkl, encoder.pkl, and scaler.pkl.
 
 ```bash
