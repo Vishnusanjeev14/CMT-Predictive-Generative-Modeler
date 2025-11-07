@@ -21,28 +21,6 @@ This application features a live web dashboard with two primary functions:
 
 ---
 
-## Project Structure (Corrected)
-
-```text
-/CMT_Project/
-├── app.py                     # Flask web server (main application logic)
-├── create_models.py           # Script to train the RandomForest predictor
-├── tabular_cgan.py            # Script for the CGAN deep learning model
-├── cmt_synthetic_dataset.csv  # The base/seed synthetic dataset
-├── requirements.txt           # All Python dependencies
-|
-├── rf_model.pkl               # (Generated) The trained RandomForest model
-├── encoder.pkl                # (Generated) Data processor (OneHotEncoder)
-├── scaler.pkl                 # (Generated) Data processor (StandardScaler)
-|
-├── /checkpoints/
-│   └── cgan_checkpoint_epoch400.pt # (Generated) The trained CGAN generator
-|
-└── /templates/
-    └── index.html             # The frontend user interface
-
-```text
-
 How to Run
 This project requires two training steps before the web application can be run.
 
@@ -72,3 +50,28 @@ Bash
 
 python -m flask run
 Open your web browser and go to http://127.0.0.1:5000 to see the application live.
+
+
+## Project Structure 
+
+```text
+/CMT_Project/
+├── app.py                     # Flask web server (main application logic)
+├── create_models.py           # Script to train the RandomForest predictor
+├── tabular_cgan.py            # Script for the CGAN deep learning model
+├── cmt_synthetic_dataset.csv  # The base/seed synthetic dataset
+├── requirements.txt           # All Python dependencies
+|
+├── rf_model.pkl               # (Generated) The trained RandomForest model
+├── encoder.pkl                # (Generated) Data processor (OneHotEncoder)
+├── scaler.pkl                 # (Generated) Data processor (StandardScaler)
+|
+├── /checkpoints/
+│   └── cgan_checkpoint_epoch400.pt # (Generated) The trained CGAN generator
+|
+└── /templates/
+    └── index.html             # The frontend user interface
+
+
+
+
