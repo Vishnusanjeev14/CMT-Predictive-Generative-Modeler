@@ -41,7 +41,7 @@ This application features a live web dashboard with two primary functions:
 └── /templates/
     └── index.html             # The frontend user interface
 
-
+```text
 
 How to Run
 This project requires two training steps before the web application can be run.
