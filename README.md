@@ -27,24 +27,24 @@ This project requires two training steps before the web application can be run.
 
 Step 1: Install Dependencies Install all the required Python libraries from the requirements.txt file.
 
-Bash
-pip install -r requirements.txt 
+'''bash
+pip install -r requirements.txt'''
 
 Step 2: Train the AI Models You must run both training scripts to generate the models that the app.py server needs.
 A. Train the Predictive Model: This script reads cmt_synthetic_dataset.csv and creates rf_model.pkl, encoder.pkl, and scaler.pkl.
 
-Bash
-python create_models.py
+'''bash
+python create_models.py'''
 
 B. Train the Generative Model: This script reads cmt_synthetic_dataset.csv, trains the CGAN, and creates the checkpoints/cgan_checkpoint_epoch400.pt file.
 
-Bash
-python tabular_cgan.py --data cmt_synthetic_dataset.csv --out cmt_synthetic_generated.csv
+'''bash
+python tabular_cgan.py --data cmt_synthetic_dataset.csv --out cmt_synthetic_generated.csv'''
 
 Step 3: Run the Web Application Once both models are trained and their files are present, you can start the Flask web server.
 
-Bash
-python -m flask run 
+'''bash
+python -m flask run'''
 
 Open your web browser and go to http://127.0.0.1:5000 to see the application live.
 
